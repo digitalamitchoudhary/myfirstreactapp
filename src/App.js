@@ -6,8 +6,7 @@ function App() {
   return (
    <>
   <Navbar title="New Navbars" aboutText ='About text'/> 
-
-
+  
   <div className="container my-3">
         <TextForm heading="My Heading"/>
      
