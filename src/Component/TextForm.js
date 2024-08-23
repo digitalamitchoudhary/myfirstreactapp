@@ -4,28 +4,64 @@ import React, {useState} from 'react'
 
 export default function TextForm(props) {
 
-  const [text, setText] = useState('Enter your text here');
+  const [text, setText] = useState('');
   const wordCount = text.split(/\s+/).filter(Boolean).length;
 
+
+
+
+
+
   const handleUpclick = ()=>{
+    if (text.trim() === "") {
+      props.showAlert("Error: Input is empty", "danger");  // Show error alert
+      return;
+    }
     // console.log("click up ")
     let newText = text.toUpperCase();
     setText(newText);
+    props.showAlert("Upper the Text", "success");
   }
 
+
+
+
+
   const handleLowclick = ()=>{
+    if (text.trim() === "") {
+      props.showAlert("Error: Input is empty", "danger");  // Show error alert
+      return;
+    }
+
     // console.log("click up ")
     let newText = text.toLowerCase();
     setText(newText);
+    props.showAlert("Lower the Text", "success");
   }
 
+
+
+
+
   const handleClearclick = ()=>{
+    if (text.trim() === "") {
+      props.showAlert("Error: Input is empty", "danger");  // Show error alert
+      return;
+    }
     // console.log("click Clear ")
     let newText = ""
     setText(newText);
+    props.showAlert("Clear Text", "success");
   }
+
+
+
+
   const handleSentenseclick = ()=>{
-    
+    if (text.trim() === "") {
+      props.showAlert("Error: Input is empty", "danger");  // Show error alert
+      return;
+    }
     let sentences = text.match(/[^.!?]+[.!?]*/g) || [];
     // console.log(sentences)
     const firstWords = sentences.map(sentence => {
@@ -44,7 +80,7 @@ export default function TextForm(props) {
     const paragraph = firstWords.join(' ');
     setText(paragraph);
     
-    
+    props.showAlert("Convert in Sentence case", "success");
     } 
   const handleUpChange = (event)=>{
     // console.log("change up")
@@ -52,6 +88,10 @@ export default function TextForm(props) {
   }
   const handleCapitalcase = ()=>{
       
+    if (text.trim() === "") {
+      props.showAlert("Error: Input is empty", "danger");  // Show error alert
+      return;
+    }
       let sentence = text;
       let words = sentence.split(' ');
       let capitalizedWords = [];
@@ -66,9 +106,17 @@ export default function TextForm(props) {
       }
      let capitalizedSentence = capitalizedWords.join(' ');
                 setText(capitalizedSentence);
+
+                props.showAlert("Convert in Capital case", "success");
+              
   }
    
   const speak = () => {
+
+    if (text.trim() === "") {
+      props.showAlert("Error: Input is empty", "danger");  // Show error alert
+      return;
+    }   
     let msg = new SpeechSynthesisUtterance(text);
     window.speechSynthesis.speak(msg);
     const toogle = document.getElementById('toggle')
@@ -84,16 +132,16 @@ export default function TextForm(props) {
 }
  
   return (
-    <div>
-   <h1>{props.heading}</h1>
+    <div className='container'style={{color: props.mode==='dark'?'white':'#042743'}}>
+   <h1 className='mb-4'>{props.heading}</h1>
 
    {/* form start here */}
    
-   <div className="mb-3">
+   <div>
   
-             <textarea className="form-control" value={text} onChange={handleUpChange} id="myBox" rows="12"></textarea>
+             <textarea className="form-control" placeholder="Enter your text here..." value={text} onChange={handleUpChange} style={{backgroundColor:props.mode==='dark'?'#115184':'white', color: props.mode==='dark'?'white':'#042743 ',}} id="myBox" rows="12"></textarea>
   </div>
-  <button className="btn btn-primary mx-2" onClick={handleUpclick}>Convert to Upper case</button>
+  <button className="btn btn-primary mx-1 my-3" onClick={handleUpclick}>Convert to Upper case</button>
   <button className="btn btn-primary mx-1" onClick={handleLowclick}>Convert to Lower case</button>
   <button className="btn btn-primary mx-1" onClick={handleClearclick}>Clear text</button>
   < button className="btn btn-primary mx-1" onClick={handleCapitalcase}>Captial Case</button>
@@ -103,12 +151,12 @@ export default function TextForm(props) {
   
    
  
-  <div className="container my-3"><h2>Your Text Summary s</h2>
-  <p> {wordCount} words and {text.length} characters</p>
-  <p> {0.0008*wordCount} Minutes read</p>
+  <div className=" my-3"><h2 style={{ color: props.mode==='dark'?'white':'#042743'}}>Your Text Summary </h2>
+  <p style={{ color: props.mode==='dark'?'white':'#042743'}}> {wordCount} words and {text.length} characters</p>
+  <p style={{ color: props.mode==='dark'?'white':'#042743'}}> {0.0008*wordCount} Minutes read</p>
 
-  <h2>Preview</h2>
-  <p>{text}</p>
+  <h2 style={{ color: props.mode==='dark'?'white':'#042743'}}>Preview</h2>
+  <p style={{ color: props.mode==='dark'?'white':'#042743'}}>{text}</p>
 
 
   
