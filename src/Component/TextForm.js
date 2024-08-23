@@ -118,28 +118,50 @@ export default function TextForm(props) {
       return;
     }   
     let msg = new SpeechSynthesisUtterance(text);
+
+ // Reset the button text when the speech ends
+ msg.onend = () => {
+  const toggle = document.getElementById('toggle');
+  toggle.innerHTML = "Speak";
+};
+
+
     window.speechSynthesis.speak(msg);
     const toogle = document.getElementById('toggle')
     if (toogle.textContent === "Speak") {
         toogle.innerHTML = "Stop"
+        
     }
     else {
         toogle.innerHTML = "Speak"
         if (toogle.innerHTML === "Speak"){
             window.speechSynthesis.cancel()
+           
         }
+        
     }
-}
+    props.showAlert("Speak Succesfully", "success");
+  }
  
   return (
     <div className='container'style={{color: props.mode==='dark'?'white':'#042743'}}>
    <h1 className='mb-4'>{props.heading}</h1>
 
    {/* form start here */}
+
+    
    
    <div>
+    {/* Embedded style for placeholder */}
+    <style>
+        {`
+          #myBox::placeholder {
+            color: ${props.mode === 'dark' ? 'white' : 'black'};
+          }
+        `}
+      </style>
   
-             <textarea className="form-control" placeholder="Enter your text here..." value={text} onChange={handleUpChange} style={{backgroundColor:props.mode==='dark'?'#115184':'white', color: props.mode==='dark'?'white':'#042743 ',}} id="myBox" rows="12"></textarea>
+             <textarea className="form-control" placeholder="Enter your text here..." value={text} onChange={handleUpChange} style={{backgroundColor:props.mode==='dark'?'#134e7d':'white', color: props.mode==='dark'?'white':'black'}} id="myBox" rows="12"></textarea>
   </div>
   <button className="btn btn-primary mx-1 my-3" onClick={handleUpclick}>Convert to Upper case</button>
   <button className="btn btn-primary mx-1" onClick={handleLowclick}>Convert to Lower case</button>
